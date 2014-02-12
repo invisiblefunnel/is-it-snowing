@@ -28,7 +28,7 @@ class CurrentWeather < Struct.new(:response)
   end
 
   def snowing?
-    response['current_observation']['weather'].downcase.include?(SNOW_INDICATOR)
+    weather.downcase.include?(SNOW_INDICATOR)
   end
 
   def last_updated 
@@ -37,6 +37,10 @@ class CurrentWeather < Struct.new(:response)
 
   def icon_url
     response['current_observation']['icon_url']
+  end
+
+  def weather
+    response['current_observation']['weather']
   end
 end
 
