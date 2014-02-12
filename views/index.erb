@@ -2,6 +2,10 @@
 <html>
 <head>
   <title>Is it snowing in <%= CITY %>, <%= STATE %>?</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  
   <link href='http://fonts.googleapis.com/css?family=Raleway:200,700' rel='stylesheet' type='text/css'>
   <style type="text/css">
     body{
@@ -59,6 +63,13 @@
     .bottom a {
       font-weight: 200;
     }
+
+    @media (max-width: 750px) {
+      h1 {
+        font-size: 100px;
+      }
+    }
+
   </style>
 </head>
 <body>
