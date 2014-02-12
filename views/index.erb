@@ -64,9 +64,31 @@
       font-weight: 200;
     }
 
+    .updated {
+      font-size: 22px;
+    }
+
     @media (max-width: 750px) {
       h1 {
         font-size: 100px;
+      }
+      h2 {
+        font-size: 18px;
+      }
+      body, .updated {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      h1 {
+        font-size: 80px;
+      }
+      h2 {
+        font-size: 24px;
+      }
+      .bottom {
+        font-size: 12px;
       }
     }
 
@@ -81,7 +103,7 @@
       <% else %>
         <h1>Nope</h1>
       <% end %>
-      <p style="font-size: 22px;">(updated <%= time_ago_in_words @weather.last_updated %> ago)</p>
+      <p class="updated">(updated <%= time_ago_in_words @weather.last_updated %> ago)</p>
       <p>made by <a href="https://twitter.com/invisiblefunnel">danny</a> + <a href="http://team-charlotte.tumblr.com">cfa: team charlotte</a></p>
       <p><a href="https://github.com/invisiblefunnel/is-it-snowing"><img src="GitHub-Mark-32px.png"></a></p>
     </div>
