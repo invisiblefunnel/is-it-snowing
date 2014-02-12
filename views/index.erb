@@ -2,21 +2,76 @@
 <html>
 <head>
     <title>Is it snowing in <%= CITY %>, <%= STATE %>?</title>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:200,700' rel='stylesheet' type='text/css'>
     <style type="text/css">
-    body{
-      background-color: #fff;
-      font-family: "Helvetica";
-    }
+      body{
+        
+        font-family: "Raleway", Helvetica, sans-serif;
+        color: #fff;
+        height: 100%;
+        font-weight: 200;
+      }
+
+      a {
+        color: #fff;
+      }
+      
+      h2 {
+        font-weight: 200;
+        text-transform: uppercase;
+        font-size: 34px;
+      }
+      h1 {
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 210px;
+        margin: 60px 0;
+
+      }
+
+      html {
+        background:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)) fixed, url(<% if @weather.snowing? %>yes.jpg<% else %>no.jpg<% end %>) no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+      }
+
+      .content {
+        position: relative;
+
+      }
+
+      .container {
+        text-align: center;
+        width: 80%;
+        height: 80%;
+        overflow: visible;
+        margin: auto;
+        position: absolute;
+        top: 0; left: 0; bottom: 0; right: 0;
+      }
+
     </style>
 </head>
 <body>
-  <h1>Is it snowing in <%= CITY %>, <%= STATE %>?</h1>
-  <h2><%= @weather.snowing? %></h2>
-  <img src="<%= @weather.icon_url %>"/>
-  <p>Updated <%= @weather.last_updated %> ago</p>
-  <p>made by <a href="https://twitter.com/invisiblefunnel">danny</a></p>
-  <p><a href="https://github.com/invisiblefunnel/is-it-snowing"><img src="GitHub-Mark-32px.png"></a></p>
-  <pre style="display:none;"><%= JSON.pretty_generate @weather.response %></pre>
+
+<div class="container">
+
+  <div class="content">
+    <h2>Is it snowing in <%= CITY %>, <%= STATE %>?</h2>
+    <% if @weather.snowing? %>
+      <h1>Yep</h1>
+    <% else %>
+      <h1>Nope</h1>
+    <% end %>
+    <p style="font-size: 22px;">(updated <%= @weather.last_updated %> ago)</p>
+    <p>made by <a href="https://twitter.com/invisiblefunnel">danny</a> + <a href="http://team-charlotte.tumblr.com">team charlotte</a></p>
+    <p><a href="https://github.com/invisiblefunnel/is-it-snowing"><img src="GitHub-Mark-32px.png"></a></p>
+    <pre style="display:none;"><%= JSON.pretty_generate @weather.response %></pre>
+  </div>
+
+  </div>
 
   <script type="text/javascript">
     var _gauges = _gauges || [];
