@@ -21,8 +21,6 @@ Connection = Faraday.new(url: ENDPOINT) do |conn|
 end
 
 class CurrentWeather < Struct.new(:response)
-  include ActionView::Helpers::DateHelper
-
   SNOW_INDICATOR = "snow".freeze
 
   def self.update(conn)
@@ -30,17 +28,20 @@ class CurrentWeather < Struct.new(:response)
   end
 
   def snowing?
-    weather = response['current_observation']['weather'].downcase
-    weather.include?(SNOW_INDICATOR) ? true : false
+    response['current_observation']['weather'].downcase.include?(SNOW_INDICATOR)
   end
 
   def last_updated 
-    time_ago_in_words Time.at(response['current_observation']['local_epoch'].to_i)
+    Time.at(response['current_observation']['local_epoch'].to_i)
   end
 
   def icon_url
     response['current_observation']['icon_url']
   end
+end
+
+helpers do
+  include ActionView::Helpers::DateHelper
 end
 
 get '/' do
