@@ -24,3 +24,5 @@ heroku config:set STATE=NC
 git push heroku master
 heroku open
 ```
+
+[Add your version to the wiki.](https://github.com/invisiblefunnel/is-it-snowing/wiki/Have-you-redeployed-this-app%3F)
