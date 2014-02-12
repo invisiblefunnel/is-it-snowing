@@ -7,7 +7,11 @@ Dotenv.load if defined?(Dotenv)
 CITY = ENV['CITY']
 STATE = ENV['STATE']
 API_KEY = ENV['WUNDERGROUND_API_KEY']
-ENDPOINT = 'http://api.wunderground.com/api/%s/conditions/q/%s/%s.json' % [API_KEY,STATE,CITY]
+ENDPOINT = 'http://api.wunderground.com/api/%s/conditions/q/%s/%s.json' % [
+             API_KEY,
+             URI.escape(STATE),
+             URI.escape(CITY)
+           ]
 
 Connection = Faraday.new(url: ENDPOINT) do |conn|
   conn.response :caching do
