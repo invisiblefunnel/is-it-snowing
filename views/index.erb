@@ -8,6 +8,10 @@
   
   <link href='http://fonts.googleapis.com/css?family=Raleway:200,700' rel='stylesheet' type='text/css'>
   <style type="text/css">
+    #debug {
+      display: none;
+    }
+
     body{
       font-family: "Raleway", Helvetica, sans-serif;
       color: #fff;
@@ -23,12 +27,21 @@
       font-weight: 200;
       text-transform: uppercase;
       font-size: 34px;
+      margin-bottom: 50px;
     }
     h1 {
       font-weight: 700;
       text-transform: uppercase;
       font-size: 210px;
-      margin: 60px 0;
+      margin: 0 0 30px 0;
+    }
+
+    h3 {
+      font-weight: 200;
+      font-size: 34px;
+      margin-top: 40px;
+      margin-bottom: 80px;
+      text-transform: lowercase;
     }
 
     html {
@@ -54,7 +67,7 @@
     }
 
     .bottom {
-      font-weight: 700;
+
       margin: 0 auto;
       width: 100%;
       text-align: center;
@@ -68,6 +81,10 @@
       font-size: 22px;
     }
 
+    .madeby {
+      display:inline;
+    }
+
     @media (max-width: 750px) {
       h1 {
         font-size: 100px;
@@ -78,13 +95,15 @@
       body, .updated {
         font-size: 14px;
       }
-      .bottom a {
+      .bottom .cities a {
         display: block;
         margin-bottom: 15px;
       }
       .bottom span {
         display: none;
-        visibility: hidden;
+      }
+      .bottom .madeby {
+        display: block;
       }
     }
 
@@ -104,13 +123,15 @@
     <div class="content">
       <h2>Is it snowing in <%= CITY %>, <%= STATE %>?</h2>
       <h1><%= @weather.snowing? ? 'Yep' : 'Nope' %></h1>
-      <h2><%= @weather.weather %></h2>
-      <p class="updated">(updated <%= time_ago_in_words @weather.last_updated %> ago)</p>
-      <p>made by <a href="https://twitter.com/invisiblefunnel">danny</a> + <a href="http://team-charlotte.tumblr.com">cfa: team charlotte</a></p>
-      <p><a href="https://github.com/invisiblefunnel/is-it-snowing"><img src="GitHub-Mark-32px.png"></a></p>
+      <h3>it's just <%= @weather.weather %>.</h3>
     </div>
     <div class="bottom">
-      <a href="http://www.snowinginlex.com/">lexington, ky</a>
+      <p><strong>updated <%= time_ago_in_words @weather.last_updated %> ago</strong>
+      <span>//</span>
+      <span class="madeby">made by <a href="https://twitter.com/invisiblefunnel">danny</a> + <a href="http://team-charlotte.tumblr.com">cfa: team charlotte</a></p>
+      </span>
+      <p><a href="https://github.com/invisiblefunnel/is-it-snowing"><img src="GitHub-Mark-Light-64px.png" width='32px' height=auto></a></p>
+      <div class ="cities"><a href="http://www.snowinginlex.com/">lexington, ky</a>
       <span>&nbsp;&#183;&nbsp;</span>
       <a href="http://isitsnowinginchattanooga.com/">chattanooga, tn</a>
       <span>&nbsp;&#183;&nbsp;</span>
@@ -121,10 +142,11 @@
       <a href="http://humedadsanjuan.com/">san juan, pr</a>
       <span>&nbsp;&#183;&nbsp;</span>
       <a href="http://whatdoestheweatherrocksay.com/">san antonio, tx</a>
+      </div>
     </div>
   </div>
 
-  <pre style="display:none;"><%= JSON.pretty_generate @weather.response %></pre>
+  <pre id="debug"><%= JSON.pretty_generate @weather.response %></pre>
 
   <script type="text/javascript">
     var _gauges = _gauges || [];
