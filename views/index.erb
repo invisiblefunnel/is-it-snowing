@@ -123,7 +123,7 @@
     <div class="content">
       <h2>Is it snowing in <%= CITY %>, <%= STATE %>?</h2>
       <h1><%= @weather.snowing? ? 'Yep' : 'Nope' %></h1>
-      <h3>it's just <%= @weather.weather %>.</h3>
+      <h3><%= @weather.weather %></h3>
     </div>
     <div class="bottom">
       <p><strong>updated <%= time_ago_in_words @weather.last_updated %> ago</strong>
