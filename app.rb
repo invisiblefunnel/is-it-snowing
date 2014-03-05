@@ -1,8 +1,13 @@
-Bundler.require(:default, ENV['RACK_ENV'])
 require 'active_support/cache'
 require 'action_view'
+require 'connection_pool'
+require 'dotenv'
+require 'faraday'
+require 'faraday_middleware'
+require 'memoizable'
+require 'sinatra'
 
-Dotenv.load if defined?(Dotenv)
+Dotenv.load
 
 CITY = ENV['CITY']
 STATE = ENV['STATE']
@@ -13,18 +18,19 @@ ENDPOINT = 'http://api.wunderground.com/api/%s/conditions/q/%s/%s.json' % [
              URI.escape(CITY)
            ]
 
-Connection = Faraday.new(url: ENDPOINT) do |conn|
-  conn.response :caching do
-    ActiveSupport::Cache::MemoryStore.new(expires_in: 300)
+ThreadSafeCache = ActiveSupport::Cache::MemoryStore.new(expires_in: 300)
+
+Connections = ConnectionPool.new(size: 5) do
+  Faraday.new(url: ENDPOINT) do |faraday|
+    faraday.response(:caching) { ThreadSafeCache }
+    faraday.response(:json)
+    faraday.response(:logger)
+    faraday.adapter(Faraday.default_adapter)
   end
-
-  conn.response :json
-  conn.response :logger
-
-  conn.adapter Faraday.default_adapter
 end
 
 class CurrentWeather < Struct.new(:response)
+  include Memoizable
   SNOW_INDICATOR = "snow".freeze
 
   def self.update(conn)
@@ -34,18 +40,21 @@ class CurrentWeather < Struct.new(:response)
   def snowing?
     weather.downcase.include?(SNOW_INDICATOR)
   end
+  memoize :snowing?
 
   def last_updated 
     Time.at(response['current_observation']['local_epoch'].to_i)
   end
-
-  def icon_url
-    response['current_observation']['icon_url']
-  end
+  memoize :last_updated
 
   def weather
     response['current_observation']['weather']
   end
+  memoize :weather
+end
+
+configure do
+  set :server, :puma
 end
 
 helpers do
@@ -53,6 +62,6 @@ helpers do
 end
 
 get '/' do
-  @weather = CurrentWeather.update(Connection)
+  @weather = Connections.with { |conn| CurrentWeather.update(conn) }
   erb :index
 end
